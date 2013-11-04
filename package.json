@@ -16,11 +16,11 @@
   "config": {
     "publishtest": false
   },
-  "homepage": "https://npmjs.org/doc/",
+  "homepage": "https://github.com/aleechou/repo-npm",
   "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/isaacs/npm"
+    "url": "git@github.com:aleechou/rnpm.git#repo-npm"
   },
   "bugs": {
     "email": "npm-@googlegroups.com",

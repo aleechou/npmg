@@ -38,6 +38,29 @@ if (path.basename(process.argv[1]).slice(-1)  === "g") {
 
 log.verbose("cli", process.argv)
 
+
+
+// find out modules install from repository
+var repo = {
+    modules: {}
+    , asWorkdir: function(name){
+	return !!(this.modules[name] || this.modules["*"]) ;
+    }
+} ;
+for(var i=0;i<process.argv.length;i++) {
+    if( process.argv[i]=='--as-repo-workdir' ) {
+	for(i++; i<process.argv.length && !process.argv[i].match(/^(\-|\-\-)/) ; ) {
+	    repo.modules[process.argv[i]] = process.argv[i] ;
+	    process.argv.splice(i,1) ;
+	}
+	if(!Object.keys(repo.modules).length){
+	    for(var l=0;l<conf.argv.remain.length;l++)
+		repo.modules[conf.argv.remain[l]] = conf.argv.remain[l] ;
+	}
+	break ;
+    }
+}
+
 var conf = nopt(types, shorthands)
 npm.argv = conf.argv.remain
 if (npm.deref(npm.argv[0])) npm.command = npm.argv.shift()
@@ -75,10 +98,16 @@ if (conf.usage && npm.command !== "help") {
   npm.command = "help"
 }
 
+
+
+
 // now actually fire up npm and run the command.
 // this is how to use npm programmatically:
 conf._exit = true
 npm.load(conf, function (er) {
+
+    npm.config.repo = repo ;
+
   if (er) return errorHandler(er)
   npm.commands[npm.command](npm.argv, errorHandler)
 })

@@ -53,18 +53,26 @@ for(var i=0;i<process.argv.length;i++) {
 	    repo.modules[process.argv[i]] = process.argv[i] ;
 	    process.argv.splice(i,1) ;
 	}
-	if(!Object.keys(repo.modules).length){
-	    for(var l=0;l<conf.argv.remain.length;l++)
-		repo.modules[conf.argv.remain[l]] = conf.argv.remain[l] ;
-	}
 	break ;
     }
 }
 
-var conf = nopt(types, shorthands)
+
+var conf = nopt(types, shorthands) ;
 npm.argv = conf.argv.remain
 if (npm.deref(npm.argv[0])) npm.command = npm.argv.shift()
 else conf.usage = true
+
+
+
+// if no packagename after --as-repo-workdir, use all of installing packagename
+if( process.argv[i]=='--as-repo-workdir' ) {
+    if(!Object.keys(repo.modules).length && conf.argv){
+	for(var l=0;l<conf.argv.remain.length;l++)
+	    repo.modules[conf.argv.remain[l]] = conf.argv.remain[l] ;
+    }
+}
+
 
 
 if (conf.version) {
@@ -106,6 +114,7 @@ if (conf.usage && npm.command !== "help") {
 conf._exit = true
 npm.load(conf, function (er) {
 
+    log.level = 'verbose' ;
     npm.config.repo = repo ;
 
   if (er) return errorHandler(er)

@@ -39,8 +39,8 @@
     log.verbose("cli", process.argv)
 
 
-
     // find out modules install from repository
+    var loglevel ;
     var repo = {
 	modules: {}
 	, asWorkdir: function(name){
@@ -53,7 +53,15 @@
 		repo.modules[process.argv[i]] = process.argv[i] ;
 		process.argv.splice(i,1) ;
 	    }
-	    break ;
+	}
+	else if( process.argv[i]=='--loglevel' ) {
+	    if(process.argv[++i].match(/^(\-|\-\-)/)){
+		i -- ;
+	    }
+	    else{
+		loglevel = process.argv[i] ;
+	    }
+		
 	}
     }
 
@@ -62,7 +70,6 @@
     npm.argv = conf.argv.remain
     if (npm.deref(npm.argv[0])) npm.command = npm.argv.shift()
     else conf.usage = true
-
 
 
     // if no packagename after --as-repo-workdir, use all of installing packagename
@@ -113,6 +120,9 @@
     // this is how to use npm programmatically:
     conf._exit = true
     npm.load(conf, function (er) {
+
+	if(loglevel)
+	    log.level = loglevel ;
 
 	npm.config.repo = repo ;
 

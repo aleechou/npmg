@@ -1,5 +1,5 @@
 {
-  "version": "0.0.2",
+  "version": "0.0.3",
   "name": "repo-npm",
   "publishConfig": {
     "proprietary-attribs": false
@@ -20,7 +20,7 @@
   "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me)",
   "repository": {
     "type": "git",
-    "url": "git@github.com:aleechou/repo-npm.git#0.0.2"
+    "url": "git@github.com:aleechou/repo-npm.git#0.0.3"
   },
   "bugs": {
     "email": "npm-@googlegroups.com",
